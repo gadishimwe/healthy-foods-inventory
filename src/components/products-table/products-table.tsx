@@ -51,6 +51,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, productProperti
     let newSelected: number[] = []
 
     if (selectedIndex === -1) {
+      if (selected.length === 2) return
       newSelected = newSelected.concat(selected, id)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1))
@@ -83,7 +84,9 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, productProperti
               </TableRow>
             </TableHead>
             <TableBody>
-              {selectedProducts.length === 2 && <CompareProducts selectedProducts={selectedProducts} />}
+              {selectedProducts.length === 2 && (
+                <CompareProducts selectedProducts={selectedProducts} productProperties={productProperties} />
+              )}
               {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
                 <TableRow
                   key={product.id}
@@ -91,21 +94,25 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, productProperti
                   onClick={(event) => handleSelectClick(event, product.id)}
                   selected={isSelected(product.id)}
                 >
-                  <TableCell align="center">{product.name}</TableCell>
-                  <TableCell align="center">
-                    {product.tags
-                      ? product.tags.map((tag, index) => (
-                          <span key={tag}>{`${tag}${index + 1 < product.tags.length ? ', ' : ''}`}</span>
-                        ))
-                      : '-'}
-                  </TableCell>
-                  <TableCell align="center">{product.energy ? product.energy : '-'}</TableCell>
-                  <TableCell align="center">{product.protein ? product.protein : '-'}</TableCell>
-                  <TableCell align="center">{product.saturatedFat ? product.saturatedFat : '-'}</TableCell>
-                  <TableCell align="center">{product.carbohydrate ? product.carbohydrate : ''}</TableCell>
-                  <TableCell align="center">{product.sugars ? product.sugars : '-'}</TableCell>
-                  <TableCell align="center">{product.dietaryFibre ? product.dietaryFibre : '-'}</TableCell>
-                  <TableCell align="center">{product.sodium ? product.sodium : '-'}</TableCell>
+                  {productProperties.map((productProperty) => {
+                    if (productProperty.name === 'tags') {
+                      return (
+                        <TableCell key={productProperty.name} align="center">
+                          {product.tags
+                            ? product.tags.map((tag, index) => (
+                                <span key={tag}>{`${tag}${index + 1 < product.tags.length ? ', ' : ''}`}</span>
+                              ))
+                            : '-'}
+                        </TableCell>
+                      )
+                    } else {
+                      return (
+                        <TableCell key={productProperty.name} align="center">
+                          {product[productProperty.name] ? product[productProperty.name] : '-'}
+                        </TableCell>
+                      )
+                    }
+                  })}
                 </TableRow>
               ))}
               {emptyRows > 0 && (

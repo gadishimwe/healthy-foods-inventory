@@ -1,6 +1,5 @@
 import React from 'react'
 import Head from 'next/head'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { ProductsTable } from '@/components'
 import styles from '@/styles/Home.module.css'
@@ -27,9 +26,8 @@ interface HomeProps {
 const Home: React.FC<HomeProps> = (props) => {
   const { products, productProperties } = props
 
-  const theme = createMuiTheme({ palette: { type: 'dark' } })
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <CssBaseline />
       <div className={styles.container}>
         <Head>
@@ -46,7 +44,7 @@ const Home: React.FC<HomeProps> = (props) => {
           <ProductsTable products={products} productProperties={productProperties} />
         </main>
       </div>
-    </ThemeProvider>
+    </>
   )
 }
 
