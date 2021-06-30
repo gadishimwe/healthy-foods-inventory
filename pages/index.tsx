@@ -4,23 +4,28 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { ProductsTable } from '@/components'
 import styles from '@/styles/Home.module.css'
-// TODO uncomment the line below to import the API calls
-// import { getProductProperties, getProducts } from '@/api/products'
+import { getProductProperties, getProducts } from '@/api/products'
+import { Product, ProductPropertyEntryDTO } from '@/api/types'
 
 export async function getStaticProps(): Promise<{ props }> {
-  // TODO call getProductProperties and getProducts from '@/api/products'
-  // and return the data in order to receive it in the `Home` component
+  const products: Product[] = await getProducts()
+  const productProperties: ProductPropertyEntryDTO[] = await getProductProperties()
+
   return {
     props: {
-      // TODO products and product properties data
+      products,
+      productProperties
     }
   }
 }
 
-const Home: React.FC = (props) => {
-  const {
-    // TODO consume the products and product properties data coming from `getStaticProps`
-  } = props
+interface HomeProps {
+  products: Product[]
+  productProperties: ProductPropertyEntryDTO[]
+}
+
+const Home: React.FC<HomeProps> = (props) => {
+  const { products, productProperties } = props
 
   const theme = createMuiTheme({ palette: { type: 'dark' } })
   return (
@@ -38,8 +43,7 @@ const Home: React.FC = (props) => {
           <p className={styles.description}>
             A comphrehensive inventory of all the <code>Healthy Foods</code> in our store
           </p>
-          {/* TODO: implement the rest of the functionality starting in ProductsTable component */}
-          <ProductsTable />
+          <ProductsTable products={products} productProperties={productProperties} />
         </main>
       </div>
     </ThemeProvider>
