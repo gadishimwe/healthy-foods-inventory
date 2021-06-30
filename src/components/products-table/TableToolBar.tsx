@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, createStyles, makeStyles, Theme, Toolbar, Typography, IconButton } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import MenuIcon from '../MenuIcon'
 
 const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,7 +23,7 @@ const TableToolbar: React.FC<TableToolbarProps> = ({ numSelected }) => {
   return (
     <Toolbar className={classes.root}>
       <IconButton disabled={numSelected <= 0}>
-        <MenuIcon />
+        <MenuIcon color={numSelected > 0 ? '#fff' : '#7b7b7b'} />
       </IconButton>
       <div className={classes.title}>
         {numSelected > 0 && (
