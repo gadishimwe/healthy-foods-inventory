@@ -73,7 +73,7 @@ const ProductsTable: React.FC<ProductsTableProps> = ({ products, productProperti
       <Paper className={classes.paper}>
         <TableToolbar numSelected={selected.length} />
         <TableContainer className={classes.tableContainer}>
-          <Table aria-label="table">
+            <Table aria-label="table">
             <TableHead className={classes.head}>
               <TableRow>
                 {productProperties.map((productProperty) => (
