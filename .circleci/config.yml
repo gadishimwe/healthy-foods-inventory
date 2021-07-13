@@ -6,3 +6,4 @@ workflows:
     jobs:
       - cypress/run:
           record: true
+          command: npm test
